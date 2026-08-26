@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Farmacia y Librería M&S - Sistema de Gestión</title>
+  <title>Farmacia y Librería M&S - Sistema POS</title>
   <style>
     :root {
       --sidebar-width: 260px;
@@ -33,7 +33,7 @@
 
     .hidden { display: none !important; }
 
-    /* LAYOUT BASE */
+    /* PANTALLA LOGIN */
     #section-login {
       width: 100%;
       max-width: 420px;
@@ -145,7 +145,7 @@
 
     .btn-logout:hover { background: #fecaca; }
 
-    /* DASHBOARD CARDS (KPIs) */
+    /* CARDS KPI */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -218,11 +218,10 @@
     }
 
     .btn-action:hover { background: #1d4ed8; }
-
     .btn-success { background: var(--accent-green); }
     .btn-success:hover { background: var(--accent-green-hover); }
 
-    /* TABLAS */
+    /* TABLA DE INVENTARIO */
     .table-wrapper {
       background: var(--surface);
       border-radius: var(--radius);
@@ -270,7 +269,7 @@
     </div>
     <div class="form-group">
       <label>Usuario</label>
-      <input type="text" id="login-user" placeholder="Ej: admin">
+      <input type="text" id="login-user" placeholder="Ej: admin o mostrador">
     </div>
     <div class="form-group">
       <label>Contraseña</label>
@@ -287,14 +286,14 @@
         <span>M&S</span> ERP System
       </div>
       <nav class="nav-menu">
-        <button id="nav-inventario" class="nav-btn active" onclick="showTab('inventario')">
+        <button id="nav-ventas" class="nav-btn active" onclick="showTab('ventas')">
+          🛒 Registrar Venta
+        </button>
+        <button id="nav-inventario" class="nav-btn" onclick="showTab('inventario')">
           📦 Inventario
         </button>
         <button id="nav-registro-prod" class="nav-btn" onclick="showTab('registro-prod')">
           ➕ Nuevo Producto
-        </button>
-        <button id="nav-ventas" class="nav-btn" onclick="showTab('ventas')">
-          🛒 Registrar Venta
         </button>
       </nav>
     </aside>
@@ -306,9 +305,31 @@
         <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
       </header>
 
+      <!-- PESTAÑA REGISTRO VENTA (POS) -->
+      <div id="tab-ventas">
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2>Punto de Venta (Mostrador)</h2>
+          </div>
+          <div class="form-group">
+            <label>Seleccionar Producto</label>
+            <select id="v-producto" onchange="calcularTotal()"></select>
+          </div>
+          <div class="form-group">
+            <label>Cantidad a Vender</label>
+            <input type="number" id="v-cantidad" value="1" min="1" oninput="calcularTotal()">
+          </div>
+          <div class="form-group">
+            <label>Total A Cobrar</label>
+            <input type="text" id="v-total" readonly style="font-size: 1.25rem; font-weight: 800; color: var(--accent-green); background: #f0fdf4;">
+          </div>
+          <button class="btn-action btn-success" onclick="guardarVenta()">Completar Venta</button>
+        </div>
+      </div>
+
       <!-- PESTAÑA INVENTARIO -->
-      <div id="tab-inventario">
-        <div class="kpi-grid">
+      <div id="tab-inventario" class="hidden">
+        <div class="kpi-grid" id="kpi-container">
           <div class="card-kpi">
             <p>Total Productos</p>
             <h3 id="kpi-total-prod">0</h3>
@@ -325,7 +346,7 @@
 
         <div class="table-wrapper">
           <div class="table-toolbar">
-            <input type="text" id="search-inventario" placeholder="🔍 Buscar producto por nombre..." onkeyup="filtrarTabla()">
+            <input type="text" id="search-inventario" placeholder="🔍 Buscar producto..." onkeyup="filtrarTabla()">
             <button class="btn-action" onclick="cargarInventario()" style="width: auto; padding: 8px 16px;">🔄 Actualizar</button>
           </div>
           <table id="table-inventario">
@@ -335,7 +356,7 @@
                 <th>Producto</th>
                 <th>Categoría</th>
                 <th>Estado Stock</th>
-                <th>Precio</th>
+                <th>Precio Unitario</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -343,7 +364,7 @@
         </div>
       </div>
 
-      <!-- PESTAÑA NUEVO PRODUCTO -->
+      <!-- PESTAÑA NUEVO PRODUCTO (Solo Admin) -->
       <div id="tab-registro-prod" class="hidden">
         <div class="panel-card">
           <div class="panel-header">
@@ -355,7 +376,7 @@
           </div>
           <div class="form-group">
             <label>Nombre del Producto</label>
-            <input type="text" id="p-nombre" placeholder="Ej: Acetaminofén 500mg">
+            <input type="text" id="p-nombre" placeholder="Ej: Paracetamol 500mg">
           </div>
           <div class="form-group">
             <label>Categoría</label>
@@ -376,34 +397,14 @@
         </div>
       </div>
 
-      <!-- PESTAÑA REGISTRO VENTA -->
-      <div id="tab-ventas" class="hidden">
-        <div class="panel-card">
-          <div class="panel-header">
-            <h2>Punto de Venta (POS)</h2>
-          </div>
-          <div class="form-group">
-            <label>Seleccionar Producto</label>
-            <select id="v-producto" onchange="calcularTotal()"></select>
-          </div>
-          <div class="form-group">
-            <label>Cantidad a Vender</label>
-            <input type="number" id="v-cantidad" value="1" min="1" oninput="calcularTotal()">
-          </div>
-          <div class="form-group">
-            <label>Total A Cobrar</label>
-            <input type="text" id="v-total" readonly style="font-size: 1.25rem; font-weight: 800; color: var(--accent-green); background: #f0fdf4;">
-          </div>
-          <button class="btn-action btn-success" onclick="guardarVenta()">Completar Venta</button>
-        </div>
-      </div>
-
     </main>
   </div>
 
 <script>
+  // Reemplaza TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI con tu enlace /exec
   const API_URL = "https://script.google.com/macros/s/AKfycbx8euu4PifPHa_agFuhcBSkJHSh9w8grpUTrldyphp8-aR01usXRri7s36SIqLT8QvF/exec"; 
   let currentUser = "";
+  let currentRol = "";
   let inventarioData = [];
 
   async function apiRequest(payload) {
@@ -421,12 +422,31 @@
 
     if (res.success) {
       currentUser = res.nombre;
-      document.getElementById("user-welcome").innerText = `Bienvenido, ${res.nombre} (${res.rol})`;
+      currentRol = res.rol || "mostrador"; // Si el backend no envía rol, por defecto asume mostrador
+      
+      document.getElementById("user-welcome").innerText = `Usuario: ${res.nombre} (${currentRol.toUpperCase()})`;
       document.getElementById("section-login").classList.add("hidden");
       document.getElementById("section-app").classList.remove("hidden");
+      
+      aplicarPermisosRol(currentRol);
       cargarInventario();
     } else {
       alert(res.message || "Error al autenticar");
+    }
+  }
+
+  function aplicarPermisosRol(rol) {
+    const btnNuevoProd = document.getElementById("nav-registro-prod");
+    const esAdmin = rol.toLowerCase() === "admin";
+
+    if (!esAdmin) {
+      // Ocultar opción de "Nuevo Producto" para la vista Mostrador
+      if (btnNuevoProd) btnNuevoProd.style.display = "none";
+      showTab("ventas");
+    } else {
+      // Mostrar acceso completo para Administrador
+      if (btnNuevoProd) btnNuevoProd.style.display = "flex";
+      showTab("inventario");
     }
   }
 
@@ -462,7 +482,7 @@
 
         const stockBadge = item.stock > 5 
           ? `<span class="badge badge-success">${item.stock} en stock</span>` 
-          : `<span class="badge badge-danger">${item.stock} critico</span>`;
+          : `<span class="badge badge-danger">${item.stock} crítico</span>`;
 
         tbody.innerHTML += `<tr>
           <td><strong>${item.id}</strong></td>
@@ -502,7 +522,7 @@
       precio: document.getElementById("p-precio").value
     };
     await apiRequest(payload);
-    alert("Producto Guardado");
+    alert("Producto Guardado con éxito");
     showTab("inventario");
     cargarInventario();
   }
@@ -527,7 +547,7 @@
     await apiRequest(payload);
     alert("Venta registrada con éxito");
     cargarInventario();
-    showTab("inventario");
+    showTab("ventas");
   }
 </script>
 
