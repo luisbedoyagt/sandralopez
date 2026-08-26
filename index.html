@@ -3,117 +3,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema M&S - Farmacia y Librería</title>
+  <title>Farmacia y Librería M&S</title>
   <style>
-    :root { --primary: #0056b3; --accent: #28a745; --bg: #f4f6f9; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-    .container { max-width: 1000px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    h1, h2, h3 { color: var(--primary); text-align: center; }
-    .hidden { display: none; }
-    .form-group { margin-bottom: 12px; }
-    label { display: block; margin-bottom: 4px; font-weight: bold; }
-    input, select, button { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
-    button { background: var(--primary); color: white; font-weight: bold; cursor: pointer; border: none; margin-top: 10px; }
-    button:hover { opacity: 0.9; }
-    button.btn-accent { background: var(--accent); }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background: var(--primary); color: white; }
-    .nav { display: flex; gap: 10px; margin-bottom: 20px; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .badge-alert { background: #dc3545; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
-    .badge-ok { background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+    :root {
+      --primary: #1e40af;
+      --primary-hover: #1d4ed8;
+      --accent: #059669;
+      --accent-hover: #047857;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --radius: 8px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 20px 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .main-content {
+      padding: 24px;
+    }
+
+    .hidden { display: none !important; }
+
+    /* FORMULARIOS Y ELEMENTOS */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--text);
+    }
+
+    input, select, button {
+      font-family: inherit;
+      font-size: 0.95rem;
+      border-radius: var(--radius);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      background-color: #fff;
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+    }
+
+    button {
+      padding: 10px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: var(--primary);
+      color: white;
+      transition: background-color 0.2s, transform 0.1s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover { background-color: var(--primary-hover); }
+    button:active { transform: translateY(1px); }
+
+    .btn-full { width: 100%; margin-top: 8px; }
+    .btn-accent { background: var(--accent); }
+    .btn-accent:hover { background: var(--accent-hover); }
+    .btn-danger { background: var(--danger); }
+    .btn-danger:hover { background: var(--danger-hover); }
+
+    /* PANEL LOGIN */
+    #section-login {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    #section-login h2 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 1.25rem;
+      color: var(--text);
+    }
+
+    /* BARRA SUPERIOR APP */
+    .user-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .user-badge {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* NAVEGACIÓN PESTAÑAS */
+    .nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .nav button {
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: var(--radius);
+      padding: 8px 16px;
+    }
+
+    .nav button:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .nav button.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* TABLAS */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--bg);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background-color: rgba(248, 250, 252, 0.8); }
+
+    .header-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .header-action h3 { margin: 0; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>Farmacia y Librería M&S</h1>
+  <header>
+    <h1>Farmacia y Librería M&S</h1>
+  </header>
 
-  <!-- LOGIN -->
-  <div id="section-login">
-    <h2>Control de Acceso</h2>
-    <div class="form-group"><label>Usuario</label><input type="text" id="login-user" placeholder="admin"></div>
-    <div class="form-group"><label>Contraseña</label><input type="password" id="login-pass" placeholder="****"></div>
-    <button onclick="login()">Ingresar al Sistema</button>
-  </div>
-
-  <!-- PANEL PRINCIPAL -->
-  <div id="section-app" class="hidden">
-    <div class="top-bar">
-      <span id="user-welcome"></span>
-      <button onclick="logout()" style="width: auto; background: #dc3545;">Cerrar Sesión</button>
-    </div>
-    <hr>
-    <div class="nav">
-      <button onclick="showTab('inventario')">📦 Inventario</button>
-      <button onclick="showTab('registro-prod')">➕ Nuevo Producto</button>
-      <button onclick="showTab('ventas')">🛒 Registrar Venta</button>
-    </div>
-
-    <!-- PESTAÑA INVENTARIO -->
-    <div id="tab-inventario">
-      <h3>Inventario General</h3>
-      <button onclick="cargarDatos()" style="width:auto;">🔄 Actualizar Inventario</button>
-      <table id="table-inventario">
-        <thead>
-          <tr><th>ID</th><th>Código</th><th>Producto</th><th>Categoría</th><th>Stock</th><th>Precio</th><th>Estado</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <!-- PESTAÑA NUEVO PRODUCTO -->
-    <div id="tab-registro-prod" class="hidden">
-      <h3>Agregar Nuevo Producto</h3>
-      <div class="form-group"><label>ID Único (ej: PROD-01)</label><input type="text" id="p-id"></div>
-      <div class="form-group"><label>Código de Barras</label><input type="text" id="p-codigo"></div>
-      <div class="form-group"><label>Nombre del Producto</label><input type="text" id="p-nombre"></div>
-      <div class="form-group"><label>Categoría</label><select id="p-categoria"></select></div>
-      <div class="form-group"><label>Precio Costo (Q)</label><input type="number" step="0.01" id="p-costo" value="0.00"></div>
-      <div class="form-group"><label>Precio Venta (Q)</label><input type="number" step="0.01" id="p-precio" value="0.00"></div>
-      <div class="form-group"><label>Stock Inicial</label><input type="number" id="p-stock" value="0"></div>
-      <div class="form-group"><label>Stock Mínimo (Alerta)</label><input type="number" id="p-stockmin" value="5"></div>
-      <button class="btn-accent" onclick="guardarProducto()">Guardar Producto</button>
-    </div>
-
-    <!-- PESTAÑA REGISTRO VENTA -->
-    <div id="tab-ventas" class="hidden">
-      <h3>Caja / Registro de Venta</h3>
-      <div class="form-group"><label>Cliente</label><input type="text" id="v-cliente" value="Consumidor Final"></div>
+  <div class="main-content">
+    <!-- LOGIN -->
+    <div id="section-login">
+      <h2>Iniciar Sesión</h2>
       <div class="form-group">
-        <label>Forma de Pago</label>
-        <select id="v-pago"><option value="Efectivo">Efectivo</option><option value="Tarjeta">Tarjeta</option><option value="Transferencia">Transferencia</option></select>
+        <label for="login-user">Usuario</label>
+        <input type="text" id="login-user" placeholder="Ej: admin" autocomplete="username">
       </div>
-      <hr>
-      <h4>Agregar Producto a la Venta</h4>
-      <div style="display:flex; gap:10px;">
-        <select id="v-producto-select" style="flex:2;"></select>
-        <input type="number" id="v-cant" value="1" min="1" placeholder="Cant" style="flex:1;">
-        <button onclick="agregarAlCarrito()" style="flex:1; margin-top:0;">+ Agregar</button>
+      <div class="form-group">
+        <label for="login-pass">Contraseña</label>
+        <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
       </div>
-
-      <table id="table-carrito">
-        <thead>
-          <tr><th>Producto</th><th>Cant</th><th>Precio</th><th>Subtotal</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <h3 style="text-align:right;">Total: Q<span id="v-total-txt">0.00</span></h3>
-      <button class="btn-accent" onclick="guardarVenta()">Completar Venta</button>
+      <button class="btn-full" onclick="login()">Ingresar al Sistema</button>
     </div>
 
+    <!-- PANEL PRINCIPAL -->
+    <div id="section-app" class="hidden">
+      <div class="user-bar">
+        <span id="user-welcome" class="user-badge"></span>
+        <button onclick="logout()" class="btn-danger">Cerrar Sesión</button>
+      </div>
+
+      <nav class="nav">
+        <button id="btn-tab-inventario" class="active" onclick="switchTab('inventario')">Ver Inventario</button>
+        <button id="btn-tab-registro-prod" onclick="switchTab('registro-prod')">Nuevo Producto</button>
+        <button id="btn-tab-ventas" onclick="switchTab('ventas')">Registrar Venta</button>
+      </nav>
+
+      <!-- PESTAÑA INVENTARIO -->
+      <div id="tab-inventario">
+        <div class="header-action">
+          <h3>Inventario Actual</h3>
+          <button onclick="cargarInventario()">🔄 Actualizar Data</button>
+        </div>
+        <div class="table-container">
+          <table id="table-inventario">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Stock</th>
+                <th>Precio</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PESTAÑA NUEVO PRODUCTO -->
+      <div id="tab-registro-prod" class="hidden">
+        <h3>Agregar Nuevo Producto</h3>
+        <div class="form-group"><label for="p-id">ID / Código de Barras</label><input type="text" id="p-id"></div>
+        <div class="form-group"><label for="p-nombre">Nombre del Producto</label><input type="text" id="p-nombre"></div>
+        <div class="form-group">
+          <label for="p-categoria">Categoría</label>
+          <select id="p-categoria">
+            <option value="Farmacia">Farmacia</option>
+            <option value="Libreria">Librería</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="p-stock">Stock Inicial</label><input type="number" id="p-stock" min="0"></div>
+        <div class="form-group"><label for="p-precio">Precio Unitario (Q)</label><input type="number" step="0.01" id="p-precio" min="0"></div>
+        <button class="btn-accent btn-full" onclick="guardarProducto()">Guardar Producto</button>
+      </div>
+
+      <!-- PESTAÑA REGISTRO VENTA -->
+      <div id="tab-ventas" class="hidden">
+        <h3>Registrar Venta</h3>
+        <div class="form-group">
+          <label for="v-producto">Seleccionar Producto</label>
+          <select id="v-producto" onchange="calcularTotal()"></select>
+        </div>
+        <div class="form-group">
+          <label for="v-cantidad">Cantidad</label>
+          <input type="number" id="v-cantidad" value="1" min="1" oninput="calcularTotal()">
+        </div>
+        <div class="form-group">
+          <label for="v-total">Total A Cobrar</label>
+          <input type="text" id="v-total" readonly style="background-color: var(--bg); font-weight: bold; color: var(--accent);">
+        </div>
+        <button class="btn-accent btn-full" onclick="guardarVenta()">Completar Venta</button>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbx8euu4PifPHa_agFuhcBSkJHSh9w8grpUTrldyphp8-aR01usXRri7s36SIqLT8QvF/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbx8euu4PifPHa_agFuhcBSkJHSh9w8grpUTrldyphp8-aR01usXRri7s36SIqLT8QvF/exec"; 
   let currentUser = "";
   let inventarioData = [];
-  let carrito = [];
 
   async function apiRequest(payload) {
-    const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
     return await res.json();
   }
 
@@ -123,110 +333,94 @@
     const res = await apiRequest({ action: "login", usuario, clave });
 
     if (res.success) {
-      currentUser = usuario;
+      currentUser = res.nombre;
       document.getElementById("user-welcome").innerText = `Usuario: ${res.nombre} (${res.rol})`;
       document.getElementById("section-login").classList.add("hidden");
       document.getElementById("section-app").classList.remove("hidden");
-      cargarDatos();
+      cargarInventario();
     } else {
-      alert(res.message);
+      alert(res.message || "Error al autenticar");
     }
   }
 
-  function logout() { location.reload(); }
-
-  function showTab(tabName) {
-    ["inventario", "registro-prod", "ventas"].forEach(t => document.getElementById(`tab-${t}`).classList.add("hidden"));
-    document.getElementById(`tab-${tabName}`).classList.remove("hidden");
+  function logout() {
+    location.reload();
   }
 
-  async function cargarDatos() {
-    const res = await apiRequest({ action: "getDatosIniciales" });
+  function switchTab(tabName) {
+    ["inventario", "registro-prod", "ventas"].forEach(t => {
+      document.getElementById(`tab-${t}`).classList.add("hidden");
+      document.getElementById(`btn-tab-${t}`).classList.remove("active");
+    });
+    document.getElementById(`tab-${tabName}`).classList.remove("hidden");
+    document.getElementById(`btn-tab-${tabName}`).classList.add("active");
+  }
+
+  function showTab(tabName) {
+    switchTab(tabName);
+  }
+
+  async function cargarInventario() {
+    const res = await apiRequest({ action: "getInventario" });
     if (res.success) {
       inventarioData = res.inventario;
-      
-      // Cargar Tabla Inventario
       const tbody = document.querySelector("#table-inventario tbody");
+      const selectVenta = document.getElementById("v-producto");
+      
       tbody.innerHTML = "";
-      inventarioData.forEach(p => {
-        const estado = p.stock <= p.stockMin ? `<span class="badge-alert">Stock Bajo</span>` : `<span class="badge-ok">OK</span>`;
-        tbody.innerHTML += `<tr><td>${p.id}</td><td>${p.codigo}</td><td>${p.nombre}</td><td>${p.categoria}</td><td>${p.stock}</td><td>Q${p.precio}</td><td>${estado}</td></tr>`;
-      });
-
-      // Cargar Select Categorías
-      const selectCat = document.getElementById("p-categoria");
-      selectCat.innerHTML = "";
-      res.categorias.forEach(c => selectCat.innerHTML += `<option value="${c}">${c}</option>`);
-
-      // Cargar Select Ventas
-      const selectVenta = document.getElementById("v-producto-select");
       selectVenta.innerHTML = "";
-      inventarioData.forEach(p => {
-        selectVenta.innerHTML += `<option value="${p.id}">${p.nombre} - Q${p.precio} (Stock: ${p.stock})</option>`;
+
+      inventarioData.forEach(item => {
+        tbody.innerHTML += `<tr>
+          <td><strong>${item.id}</strong></td>
+          <td>${item.nombre}</td>
+          <td>${item.categoria}</td>
+          <td>${item.stock}</td>
+          <td>Q ${parseFloat(item.precio).toFixed(2)}</td>
+        </tr>`;
+
+        selectVenta.innerHTML += `<option value="${item.nombre}" data-precio="${item.precio}">${item.nombre} (Stock: ${item.stock})</option>`;
       });
+      calcularTotal();
     }
   }
 
   async function guardarProducto() {
     const payload = {
       action: "addProducto",
-      usuario: currentUser,
       id: document.getElementById("p-id").value,
-      codigo: document.getElementById("p-codigo").value,
       nombre: document.getElementById("p-nombre").value,
       categoria: document.getElementById("p-categoria").value,
-      costo: document.getElementById("p-costo").value,
-      precio: document.getElementById("p-precio").value,
       stock: document.getElementById("p-stock").value,
-      stockMin: document.getElementById("p-stockmin").value
+      precio: document.getElementById("p-precio").value
     };
     await apiRequest(payload);
-    alert("Producto Registrado exitosamente");
-    showTab("inventario");
-    cargarDatos();
+    alert("Producto Guardado");
+    switchTab("inventario");
+    cargarInventario();
   }
 
-  function agregarAlCarrito() {
-    const pId = document.getElementById("v-producto-select").value;
-    const cant = parseInt(document.getElementById("v-cant").value);
-    const prod = inventarioData.find(p => p.id === pId);
-
-    if (cant > prod.stock) return alert("Stock insuficiente");
-
-    const subtotal = prod.precio * cant;
-    carrito.push({ id: prod.id, nombre: prod.nombre, cantidad: cant, precio: prod.precio, subtotal: subtotal });
-    renderCarrito();
-  }
-
-  function renderCarrito() {
-    const tbody = document.querySelector("#table-carrito tbody");
-    tbody.innerHTML = "";
-    let total = 0;
-    carrito.forEach(i => {
-      total += i.subtotal;
-      tbody.innerHTML += `<tr><td>${i.nombre}</td><td>${i.cantidad}</td><td>Q${i.precio}</td><td>Q${i.subtotal.toFixed(2)}</td></tr>`;
-    });
-    document.getElementById("v-total-txt").innerText = total.toFixed(2);
+  function calcularTotal() {
+    const select = document.getElementById("v-producto");
+    if (!select.options.length) return;
+    const precio = select.options[select.selectedIndex].getAttribute("data-precio");
+    const cant = document.getElementById("v-cantidad").value;
+    document.getElementById("v-total").value = `Q ${(precio * cant).toFixed(2)}`;
   }
 
   async function guardarVenta() {
-    if (carrito.length === 0) return alert("El carrito está vacío");
-
+    const rawTotal = document.getElementById("v-total").value.replace("Q ", "");
     const payload = {
       action: "addVenta",
       usuario: currentUser,
-      cliente: document.getElementById("v-cliente").value,
-      formaPago: document.getElementById("v-pago").value,
-      total: document.getElementById("v-total-txt").innerText,
-      items: carrito
+      producto: document.getElementById("v-producto").value,
+      cantidad: document.getElementById("v-cantidad").value,
+      total: rawTotal
     };
-
-    const res = await apiRequest(payload);
-    alert("Venta procesada con éxito ticket: " + res.idVenta);
-    carrito = [];
-    renderCarrito();
-    showTab("inventario");
-    cargarDatos();
+    await apiRequest(payload);
+    alert("Venta registrada con éxito");
+    cargarInventario();
+    switchTab("inventario");
   }
 </script>
 
